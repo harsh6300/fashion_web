@@ -107,6 +107,38 @@ function cart() {
         }
     }
 
+    const handlecheckout = async () => {
+        try {
+            const formData = new FormData();
+            formData.append("is_cart", true);
+            formData.append("address_id", 3);
+
+            const res = await fetch(`${import.meta.env.VITE_BASE_URL}/create-order/`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                },
+                body: formData
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // SUCCESS
+                toast.success("order checkout successfully");
+                // redirect if needed
+                // navigate("/dashboard");
+            } else {
+                // FAILED LOGIN
+                toast.error(data.message || data?.data?.message || "failed to order ");
+            }
+
+        } catch (error) {
+            toast.error("Something went wrong");
+            console.log(error);
+        }
+    }
+
     return (
         <div>
             <Header />
@@ -319,6 +351,7 @@ function cart() {
                                     </label>
                                 </div>
                                 <button
+                                    onClick={handlecheckout}
                                     type="submit"
                                     className=" btn btn-teal px-5 py-2 rounded-pill mb-3"
                                 >
