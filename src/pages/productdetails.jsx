@@ -141,6 +141,7 @@ const ProductDetails = () => {
             const formData = new FormData();
             formData.append("product_id", productId);
             formData.append("quantity", qty);
+            formData.append("variant_id", selectedVariant?.variant_id);
 
             const res = await fetch(`${import.meta.env.VITE_BASE_URL}/add-cart/`, {
                 method: "POST",
